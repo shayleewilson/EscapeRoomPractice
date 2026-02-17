@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIXEL ESCAPE: LEVEL 1</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  background: #0d0221;
+  font-family: 'Press Start 2P', cursive;
+  color: #00fff7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.game-container {
+  width: 900px;
+  height: 550px;
+  border: 4px solid #ff00ff;
+  box-shadow: 0 0 25px #ff00ff;
+  padding: 30px;
+  position: relative;
+  background: linear-gradient(180deg, #140533 0%, #090017 100%);
+}
+
+h1 {
+  text-align: center;
+  font-size: 18px;
+  color: #ff00ff;
+  text-shadow: 0 0 10px #ff00ff;
+}
+
+.question {
+  margin-top: 25px;
+  font-size: 10px;
+}
+
+button {
+  display: block;
+  margin-top: 10px;
+  padding: 8px;
+  width: 100%;
+  background: black;
+  color: #00fff7;
+  border: 2px solid #00fff7;
+  font-family: inherit;
+  font-size: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #00fff7;
+  color: black;
+  box-shadow: 0 0 10px #00fff7;
+}
+
+.correct {
+  border-color: #00ff00;
+  box-shadow: 0 0 10px #00ff00;
+}
+
+.incorrect {
+  border-color: red;
+  box-shadow: 0 0 10px red;
+}
+
+.code-display {
+  margin-top: 20px;
+  font-size: 12px;
+  text-align: center;
+  color: #ffff00;
+  text-shadow: 0 0 10px yellow;
+}
+
+.passcode-input {
+  margin-top: 20px;
+  text-align: center;
+}
+
+input {
+  font-family: inherit;
+  font-size: 12px;
+  padding: 10px;
+  width: 200px;
+  text-align: center;
+  background: black;
+  color: #00fff7;
+  border: 2px solid #00fff7;
+}
+
+.success-screen {
+  position: absolute;
+  inset: 0;
+  background: black;
+  color: #00ff00;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.success-screen h2 {
+  font-size: 18px;
+  text-shadow: 0 0 15px #00ff00;
+}
+</style>
+</head>
+
+<body>
+
+<div class="game-container">
+  <h1>LEVEL 1: CODE BREAKER</h1>
+
+  <div class="question" data-answer="2">
+    1️⃣ What is the main idea of a passage?
+    <button onclick="checkAnswer(this)">A) A small detail</button>
+    <button onclick="checkAnswer(this)" data-correct="true">B) The central message</button>
+    <button onclick="checkAnswer(this)">C) The author’s name</button>
+  </div>
+
+  <div class="question" data-answer="4">
+    2️⃣ An inference is:
+    <button onclick="checkAnswer(this)">A) A direct quote</button>
+    <button onclick="checkAnswer(this)">B) A vocabulary word</button>
+    <button onclick="checkAnswer(this)" data-correct="true">C) A logical conclusion</button>
+  </div>
+
+  <div class="question" data-answer="7">
+    3️⃣ Tone refers to:
+    <button onclick="checkAnswer(this)">A) The topic</button>
+    <button onclick="checkAnswer(this)" data-correct="true">B) The author’s attitude</button>
+    <button onclick="checkAnswer(this)">C) The setting</button>
+  </div>
+
+  <div class="question" data-answer="9">
+    4️⃣ Text structure shows:
+    <button onclick="checkAnswer(this)">A) Word definitions</button>
+    <button onclick="checkAnswer(this)">B) Author biography</button>
+    <button onclick="checkAnswer(this)" data-correct="true">C) How ideas are organized</button>
+  </div>
+
+  <div class="code-display" id="codeDisplay">
+    🔐 CODE: _ _ _ _
+  </div>
+
+  <div class="passcode-input">
+    <input type="text" id="passcode" maxlength="4" placeholder="ENTER CODE">
+    <button onclick="checkPasscode()">UNLOCK</button>
+  </div>
+
+  <div class="success-screen" id="successScreen">
+    <h2>ACCESS GRANTED</h2>
+    <p>You restored the system!</p>
+  </div>
+</div>
+
+<script>
+let collectedCode = [];
+
+function checkAnswer(button) {
+  const questionDiv = button.parentElement;
+  if (questionDiv.classList.contains("answered")) return;
+
+  const correctButton = questionDiv.querySelector("[data-correct='true']");
+  const digit = questionDiv.getAttribute("data-answer");
+
+  questionDiv.classList.add("answered");
+
+  if (button === correctButton) {
+    button.classList.add("correct");
+    collectedCode.push(digit);
+    updateCodeDisplay();
+  } else {
+    button.classList.add("incorrect");
+    correctButton.classList.add("correct");
+  }
+}
+
+function updateCodeDisplay() {
+  document.getElementById("codeDisplay").innerText =
+    "🔐 CODE: " + collectedCode.join(" ");
+}
+
+function checkPasscode() {
+  const input = document.getElementById("passcode").value;
+  if (input === collectedCode.join("")) {
+    document.getElementById("successScreen").style.display = "flex";
+  } else {
+    alert("ACCESS DENIED");
+  }
+}
+</script>
+
+</body>
+</html>
